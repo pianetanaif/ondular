@@ -1,193 +1,660 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Layering awareness</title>
-  <link rel="icon" href="/favicon.ico">
-  <style>
-    :root {
-      --color-page: #ededea;
-      --color-surface: #f8f8f5;
-      --color-text: #1f1f1c;
-      --color-muted: #5d5d58;
-      --color-rule: #d6d6cf;
-      --space-1: 0.5rem;
-      --space-2: 0.875rem;
-      --space-3: 1.25rem;
-      --space-4: 2rem;
-      --space-5: 3rem;
-      --radius: 12px;
-      --font-serif: "Source Serif 4", "Iowan Old Style", "Palatino Linotype", Palatino, Georgia, serif;
-      --font-sans: Inter, "Helvetica Neue", Helvetica, Arial, sans-serif;
-      --text-body: clamp(1.05rem, 1.5vw, 1.18rem);
-      --text-h1: clamp(2rem, 4vw, 3.1rem);
-      --text-h2: clamp(1.25rem, 2vw, 1.55rem);
-    }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Layering Awareness — A community driven approach to user research</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:ital,wght@0,400;0,500;1,400&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300;1,400&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --cl-black: #0A0A0A;
+    --cl-off-black: #111111;
+    --cl-dark: #1A1A1A;
+    --cl-mid: #3D3D3D;
+    --cl-muted: #7A7A7A;
+    --cl-subtle: #ABABAB;
+    --cl-border: #D8D8D0;
+    --cl-surface: #F5F4F0;
+    --cl-bg: #FFFFFF;
+    --cl-white: #FFFFFF;
+    --font-serif: 'DM Serif Display', Georgia, serif;
+    --font-sans: 'DM Sans', sans-serif;
+    --font-mono: 'DM Mono', monospace;
+    --space-1: 4px;
+    --space-2: 8px;
+    --space-3: 12px;
+    --space-4: 16px;
+    --space-6: 24px;
+    --space-8: 32px;
+    --space-12: 48px;
+    --space-16: 64px;
+    --radius-sm: 3px;
+    --radius-md: 6px;
+    --radius-lg: 10px;
+  }
 
-    * { box-sizing: border-box; }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-    body {
-      margin: 0;
-      background: var(--color-page);
-      color: var(--color-text);
-      font-family: var(--font-serif);
-      font-size: var(--text-body);
-      line-height: 1.75;
-      text-rendering: optimizeLegibility;
-      -webkit-font-smoothing: antialiased;
-    }
+  html { scroll-behavior: smooth; }
 
+  body {
+    font-family: var(--font-sans);
+    background: var(--cl-bg);
+    color: var(--cl-dark);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  /* -- Page shell -- */
+  .page-header {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    background: var(--cl-surface);
+    border-bottom: 1px solid var(--cl-border);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 var(--space-8);
+    height: 52px;
+  }
+
+  .page-header-brand {
+    font-family: var(--font-serif);
+    font-size: 1rem;
+    color: var(--cl-black);
+    text-decoration: none;
+  }
+
+  .page-header-meta {
+    font-family: var(--font-mono);
+    font-size: 0.65rem;
+    color: var(--cl-muted);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+
+  /* -- Main layout -- */
+  main {
+    margin-top: 52px;
+    display: grid;
+    grid-template-columns: 220px 1fr;
+    min-height: calc(100vh - 52px);
+    max-width: 1100px;
+    margin-left: auto;
+    margin-right: auto;
+    background: #FFFFFF;
+  }
+
+  /* -- Sidebar -- */
+  .sidebar {
+    border-right: 1px solid var(--cl-border);
+    padding: var(--space-12) var(--space-6) var(--space-12) var(--space-8);
+    position: sticky;
+    top: 52px;
+    height: calc(100vh - 52px);
+    overflow-y: auto;
+    background: #FFFFFF;
+  }
+
+  .sidebar-image {
+    margin-top: var(--space-8);
+    border-top: 1px solid var(--cl-border);
+    padding-top: var(--space-6);
+  }
+
+  .sidebar-image img {
+    width: 100%;
+    height: auto;
+    display: block;
+    opacity: 0;
+    transition: opacity 0.2s ease;
+  }
+
+  .sidebar-image img.visible {
+    opacity: 1;
+  }
+
+  .sidebar-label {
+    font-family: var(--font-mono);
+    font-size: 0.6rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--cl-subtle);
+    margin-bottom: var(--space-4);
+  }
+
+  .sidebar-nav {
+    list-style: none;
+    margin-bottom: var(--space-12);
+  }
+
+  .sidebar-nav li {
+    margin-bottom: var(--space-3);
+  }
+
+  .sidebar-nav a {
+    font-family: var(--font-sans);
+    font-size: 0.8125rem;
+    color: var(--cl-muted);
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    transition: color 0.15s;
+    line-height: 1.4;
+  }
+
+  .sidebar-nav a:hover { color: var(--cl-black); }
+
+  .sidebar-nav a.active { color: var(--cl-black); font-weight: 500; }
+
+  .sidebar-nav a::before {
+    content: '';
+    display: block;
+    width: 3px;
+    height: 3px;
+    border-radius: 50%;
+    background: currentColor;
+    flex-shrink: 0;
+    opacity: 0.5;
+  }
+
+  .sidebar-layers {
+    margin-top: var(--space-6);
+  }
+
+  .layer-pill {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    margin-bottom: var(--space-2);
+    font-family: var(--font-mono);
+    font-size: 0.625rem;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--cl-muted);
+  }
+
+  .layer-bar {
+    height: 3px;
+    background: var(--cl-border);
+    border-radius: 1px;
+    flex: 1;
+    transition: background 0.3s;
+  }
+
+  .layer-bar.l1 { background: var(--cl-dark); }
+  .layer-bar.l2 { background: #555; }
+  .layer-bar.l3 { background: #777; }
+  .layer-bar.l4 { background: #999; }
+  .layer-bar.l5 { background: var(--cl-border); }
+
+  /* -- Article -- */
+  .article {
+    padding: var(--space-16) var(--space-12) var(--space-16) var(--space-12);
+    max-width: 680px;
+    background: #FFFFFF;
+  }
+
+  .article-eyebrow {
+    font-family: var(--font-mono);
+    font-size: 0.65rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--cl-muted);
+    margin-bottom: var(--space-6);
+    display: flex;
+    align-items: center;
+    gap: var(--space-4);
+  }
+
+  .article-eyebrow::after {
+    content: '';
+    display: block;
+    flex: 1;
+    height: 1px;
+    background: var(--cl-border);
+    max-width: 80px;
+  }
+
+  .article-title {
+    font-family: var(--font-serif);
+    font-size: 2.6rem;
+    font-weight: 400;
+    line-height: 1.1;
+    color: var(--cl-black);
+    margin-bottom: var(--space-3);
+    letter-spacing: -0.01em;
+  }
+
+  .article-subtitle {
+    font-family: var(--font-serif);
+    font-style: italic;
+    font-size: 1.05rem;
+    color: var(--cl-muted);
+    margin-bottom: var(--space-12);
+    line-height: 1.5;
+  }
+
+  .article-intro {
+    font-family: var(--font-sans);
+    font-size: 1.0625rem;
+    color: var(--cl-dark);
+    line-height: 1.75;
+    margin-bottom: var(--space-12);
+  }
+
+  .article-divider {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-3);
+    margin: var(--space-12) 0;
+    color: var(--cl-subtle);
+    font-size: 0.75rem;
+    letter-spacing: 0.2em;
+  }
+
+  /* -- Sections -- */
+  .article-section {
+    margin-bottom: var(--space-12);
+    opacity: 0;
+    transform: translateY(16px);
+    transition: opacity 0.5s ease-out, transform 0.5s ease-out;
+    scroll-margin-top: 72px;
+  }
+
+  .article-section.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .section-number {
+    font-family: var(--font-mono);
+    font-size: 0.6rem;
+    color: var(--cl-subtle);
+    letter-spacing: 0.1em;
+    margin-bottom: var(--space-2);
+    display: block;
+  }
+
+  .section-heading {
+    font-family: var(--font-serif);
+    font-size: 1.5rem;
+    font-weight: 400;
+    color: var(--cl-black);
+    margin-bottom: var(--space-2);
+    line-height: 1.2;
+  }
+
+  .section-subheading {
+    font-family: var(--font-sans);
+    font-style: italic;
+    font-size: 0.8125rem;
+    color: var(--cl-muted);
+    margin-bottom: var(--space-6);
+    letter-spacing: 0.01em;
+  }
+
+  .section-body {
+    font-family: var(--font-sans);
+    font-size: 0.9375rem;
+    color: var(--cl-dark);
+    line-height: 1.75;
+  }
+
+  .section-body p {
+    margin-bottom: var(--space-4);
+  }
+
+  .section-body p:last-child { margin-bottom: 0; }
+
+  .section-body em {
+    font-style: italic;
+    color: var(--cl-mid);
+  }
+
+  .section-divider {
+    border: none;
+    border-top: 1px solid var(--cl-border);
+    margin: var(--space-12) 0;
+  }
+
+  /* -- Layer stack visual -- */
+  .layer-stack {
+    margin: var(--space-8) 0 var(--space-10);
+    border: 1px solid var(--cl-border);
+    border-radius: var(--radius-md);
+    overflow: hidden;
+  }
+
+  .layer-stack-row {
+    display: flex;
+    align-items: center;
+    padding: var(--space-3) var(--space-6);
+    border-bottom: 1px solid var(--cl-border);
+    gap: var(--space-4);
+    transition: background 0.15s;
+  }
+
+  .layer-stack-row:last-child { border-bottom: none; }
+  .layer-stack-row:hover { background: var(--cl-surface); }
+
+  .layer-stack-row.top { background: var(--cl-black); }
+  .layer-stack-row.top .layer-stack-num,
+  .layer-stack-row.top .layer-stack-name { color: var(--cl-white); }
+  .layer-stack-row.top .layer-stack-desc { color: #888; }
+
+  .layer-stack-num {
+    font-family: var(--font-mono);
+    font-size: 0.6rem;
+    color: var(--cl-subtle);
+    min-width: 18px;
+    letter-spacing: 0.06em;
+  }
+
+  .layer-stack-name {
+    font-family: var(--font-sans);
+    font-size: 0.8125rem;
+    font-weight: 500;
+    color: var(--cl-black);
+    min-width: 110px;
+  }
+
+  .layer-stack-desc {
+    font-family: var(--font-sans);
+    font-size: 0.75rem;
+    color: var(--cl-muted);
+    line-height: 1.4;
+  }
+
+  /* -- Closing stars -- */
+  .article-closing {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+    margin: var(--space-12) 0 var(--space-8);
+    color: var(--cl-subtle);
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+    letter-spacing: 0.3em;
+  }
+
+  .article-coda {
+    font-family: var(--font-serif);
+    font-style: italic;
+    font-size: 1.0625rem;
+    color: var(--cl-muted);
+    line-height: 1.7;
+    border-top: 1px solid var(--cl-border);
+    padding-top: var(--space-8);
+  }
+
+  /* -- Footer -- */
+  .page-footer {
+    border-top: 1px solid var(--cl-border);
+    padding: var(--space-8) var(--space-8);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    max-width: 1100px;
+    margin: 0 auto;
+    background: #FFFFFF;
+  }
+
+  .page-footer span {
+    font-family: var(--font-mono);
+    font-size: 0.625rem;
+    color: var(--cl-subtle);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+
+  /* -- Responsive -- */
+  @media (max-width: 720px) {
     main {
-      max-width: 96rem;
-      margin: var(--space-5) auto;
-      background: var(--color-surface);
-      padding: clamp(1.2rem, 3vw, 2.5rem);
-      border: 1px solid var(--color-rule);
-      border-radius: var(--radius);
+      grid-template-columns: 1fr;
     }
-
-    .layout {
-      display: grid;
-      grid-template-columns: minmax(0, 1fr) 44rem;
-      gap: clamp(1.25rem, 3vw, 2.75rem);
-      align-items: start;
-    }
-
-    .content {
-      min-width: 0;
-    }
-
     .sidebar {
-      position: sticky;
-      top: 1.5rem;
+      display: none;
     }
-
-    h1, h2 {
-      margin: 0;
-      line-height: 1.15;
-      letter-spacing: -0.02em;
-      font-family: var(--font-sans);
+    .article {
+      padding: var(--space-8) var(--space-6);
     }
-
-    h1 {
-      font-size: var(--text-h1);
-      margin-bottom: var(--space-1);
+    .article-title {
+      font-size: 2rem;
     }
-
-    h2 {
-      font-size: var(--text-h2);
-      margin-top: var(--space-5);
-      margin-bottom: var(--space-2);
+    .page-header {
+      padding: 0 var(--space-6);
     }
+  }
 
-    p { margin: 0 0 var(--space-3); }
+  /* -- Fade-in on load -- */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
 
-    .subtitle {
-      color: var(--color-muted);
-      font-family: var(--font-sans);
-      font-size: 0.98rem;
-      text-transform: uppercase;
-      letter-spacing: 0.08em;
-      margin-bottom: var(--space-4);
-    }
-
-    .kicker {
-      color: var(--color-muted);
-      font-style: italic;
-      margin-top: calc(-1 * var(--space-1));
-    }
-
-    .diagram { margin: 0; }
-
-    .diagram img {
-      width: 100%;
-      height: auto;
-      display: block;
-      border-radius: 6px;
-      border: 1px solid var(--color-rule);
-      background: #fff;
-    }
-
-    .divider {
-      color: var(--color-muted);
-      text-align: center;
-      letter-spacing: 0.2em;
-      margin: var(--space-5) 0;
-    }
-
-    @media (max-width: 980px) {
-      .layout {
-        grid-template-columns: 1fr;
-      }
-
-      .sidebar {
-        position: static;
-        order: -1;
-        margin-bottom: var(--space-3);
-      }
-    }
-  </style>
+  .article-eyebrow { animation: fadeUp 0.5s ease-out 0.1s both; }
+  .article-title   { animation: fadeUp 0.5s ease-out 0.2s both; }
+  .article-subtitle{ animation: fadeUp 0.5s ease-out 0.3s both; }
+  .article-intro   { animation: fadeUp 0.5s ease-out 0.4s both; }
+  .layer-stack     { animation: fadeUp 0.5s ease-out 0.5s both; }
+</style>
 </head>
 <body>
-  <main>
-    <div class="layout">
-      <article class="content">
-        <h1>Layering awareness</h1>
-        <p class="subtitle">A community driven approach to user research</p>
 
-        <p>User research, as I see it, it’s about building layers.</p>
-        <p>Like designing a city that starts with a single house, then a neighborhood, and eventually an entire community that takes on a life of its own.</p>
-        <p>My approach to user research is a stacked model, where each level depends on the groundwork laid by the previous one, much like how architects layer space or builders stack floors.</p>
-        <p>We move from community and connection all the way up to collaboration, communication, and vision.</p>
-        <p>Each layer feeds into the next, making the whole stronger, more intentional, and able to survive earthquakes, and stand the test of time.</p>
-        <p>Think of it as a set of interconnected, nested projects, each one adding depth to the user experience, each layer making the next one meaningful. There’s no skipping steps. Each layer grows organically from the last, turning raw community insights into a guiding vision for the future.</p>
+<header class="page-header">
+  <a class="page-header-brand" href="#">Ondular</a>
+  <span class="page-header-meta">Research Writing</span>
+</header>
 
-        <h2>Community as foundation</h2>
-        <p>Every meaningful product, or service, or place starts with people.</p>
-        <p>For user research, the community is our floor, the foundation for everything that comes after.</p>
-        <p>To build anything worthwhile, you need to be grounded in reality, and then move to imagination.</p>
-        <p>Communities are messy, filled with contradictions, contrasting motivations, and hidden needs.</p>
-        <p>The art is in embracing this complexity and seeing the opportunities within it.</p>
-        <p>This is where research begins, not in some clean, data-driven space but in the unpredictable real world.</p>
-        <p>Community as a foundation means deeply understanding both external dynamics (customers, prospects, markets, even competitors) and internal culture.</p>
-        <p>You dig in, become part of it, listen until you don’t just hear words but also understand the silence between them.</p>
-        <p>This immersion, this becoming a real part of the community, is where the truth lives.</p>
-        <p>This is what anthropologists call the “emic”, or the insider’s perspective.</p>
+<main>
+  <aside class="sidebar">
+    <div class="sidebar-label">Layers</div>
+    <ul class="sidebar-nav">
+      <li><a href="#community" class="active">Community</a></li>
+      <li><a href="#connection">Connection</a></li>
+      <li><a href="#collaboration">Collaboration</a></li>
+      <li><a href="#communication">Communication</a></li>
+      <li><a href="#vision">Vision</a></li>
+    </ul>
 
-        <h2>Connection</h2>
-        <p class="kicker">Building bridges</p>
-        <p>After understanding the community, the next step is connection.</p>
-        <p>Taking what you know and starting to build bridges.</p>
-        <p>Connection is about starting conversations, getting people to “sit together”, and realizing they’re all part of the same story. The goal here is creating shared understanding.</p>
-        <p>You do this through workshops, through co-creation, through teaching and learning side-by-side. It’s about creating fertile ground where ideas can grow and people feel heard. We listen not to check off a task, but to build understanding (or empathy when possible) that becomes actionable.</p>
-
-        <h2>Collaboration</h2>
-        <p class="kicker">turning connection into action</p>
-        <p>Now comes collaboration, where things get concrete.</p>
-        <p>Collaboration is taking connection and doing something with it: making progress.</p>
-        <p>It means working on something, and starting from common needs. This is the layer where insight turns into action, where researchers, designers, PMs, and engineers meet and see that the whole is much smarter than any individual part.</p>
-        <p>Start small. Go after tasks that both customers and teams see as important. It’s these early, manageable wins that build trust and momentum. No massive initiatives, just incremental wins. Those first collaborative victories that prove the value of working together. It’s all about building the foundation for systemic change.</p>
-
-        <h2>Communication, keeping the pace</h2>
-        <p>The next layer is communication.</p>
-        <p>Keeping everyone, from internal stakeholders to end users, in the loop about what’s happening, what’s changing, and why it matters. Communication is storytelling. It’s about saying, “Here’s what we’re learning, here’s how we’re growing, and here’s where we’re heading.”</p>
-        <p>Internally, this means preventing silos, making sure everyone knows the why behind the what. For users, it means being transparent about what’s happening, giving them visibility and ownership. It’s a story where we’re all part of the plot.</p>
-
-        <h2>Vision</h2>
-        <p class="kicker">designing for the future</p>
-        <p>Finally, there’s vision.</p>
-        <p>The aspirational piece that gives meaning to all the other layers. Vision is the direction that keeps the work purposeful and focused, grounding future possibilities in the realities, mental models and insights we’ve uncovered along the way.</p>
-        <p>A solid vision asks, “What kind of future do we want to create?” and makes sure that every research activity, every decision is driving towards that picture. It’s the highest layer, but without everything below it, it’s just fantasy. Vision is what happens when community, connection, collaboration, and communication all come together to create something lasting, something bigger than any of us.</p>
-
-        <p class="divider">✰✰✰</p>
-
-        <p>In this approach, every layer matters. You don’t get to the top without building from the ground up. You don’t reach vision without community. You don’t get collaboration without connection. It’s about looking into each part of the process and allowing it to inform, transform, and elevate the next, until what you have is a structure built with intention, authenticity.</p>
-      </article>
-      <aside class="sidebar">
-        <p class="diagram"><img src="layering-awareness-diagram.png" alt="Layered awareness model diagram"></p>
-      </aside>
+    <div class="sidebar-image">
+      <img id="layer-image" src="layer-community.png" alt="Current layer diagram">
     </div>
-  </main>
+  </aside>
+
+  <article class="article">
+    <div class="article-eyebrow">User Research &mdash; Framework</div>
+    <h1 class="article-title">Layering<br>Awareness</h1>
+    <p class="article-subtitle">A community driven approach to user research</p>
+
+    <div class="article-intro">
+      <p>User research, as I see it, it's about building layers. Like designing a city that starts with a single house, then a neighborhood, and eventually an entire community that takes on a life of its own.</p>
+      <p>My approach to user research is a stacked model, where each level depends on the groundwork laid by the previous one, much like how architects layer space or builders stack floors. We move from community and connection all the way up to collaboration, communication, and vision.</p>
+    </div>
+
+    <div class="layer-stack">
+      <div class="layer-stack-row top">
+        <span class="layer-stack-num">05</span>
+        <span class="layer-stack-name">Vision</span>
+        <span class="layer-stack-desc">Designing for the future</span>
+      </div>
+      <div class="layer-stack-row">
+        <span class="layer-stack-num">04</span>
+        <span class="layer-stack-name">Communication</span>
+        <span class="layer-stack-desc">Keeping the pace</span>
+      </div>
+      <div class="layer-stack-row">
+        <span class="layer-stack-num">03</span>
+        <span class="layer-stack-name">Collaboration</span>
+        <span class="layer-stack-desc">Turning connection into action</span>
+      </div>
+      <div class="layer-stack-row">
+        <span class="layer-stack-num">02</span>
+        <span class="layer-stack-name">Connection</span>
+        <span class="layer-stack-desc">Building bridges</span>
+      </div>
+      <div class="layer-stack-row">
+        <span class="layer-stack-num">01</span>
+        <span class="layer-stack-name">Community</span>
+        <span class="layer-stack-desc">The foundation</span>
+      </div>
+    </div>
+
+    <p class="section-body" style="margin-bottom: var(--space-8); color: var(--cl-muted); font-size: 0.9rem; line-height: 1.75;">Each layer feeds into the next, making the whole stronger, more intentional, and able to survive earthquakes, and stand the test of time. Think of it as a set of interconnected, nested projects, each one adding depth to the user experience, each layer making the next one meaningful. There's no skipping steps. Each layer grows organically from the last, turning raw community insights into a guiding vision for the future.</p>
+
+    <hr class="section-divider">
+
+    <!-- Community -->
+    <section class="article-section" id="community">
+      <span class="section-number">01</span>
+      <h2 class="section-heading">Community as foundation</h2>
+      <div class="section-body">
+        <p>Every meaningful product, or service, or place starts with people. For user research, the community is our floor, the foundation for everything that comes after.</p>
+        <p><em>To build anything worthwhile, you need to be grounded in reality, and then move to imagination.</em></p>
+        <p>Communities are messy, filled with contradictions, contrasting motivations, and hidden needs. The art is in embracing this complexity and seeing the opportunities within it.</p>
+        <p>This is where research begins, not in some clean, data-driven space but in the unpredictable real world. Community as a foundation means deeply understanding both external dynamics (customers, prospects, markets, even competitors) and internal culture. You dig in, become part of it, listen until you don't just hear words but also understand the silence between them. This immersion, this becoming a real part of the community, is where the truth lives.</p>
+        <p><em>This is what anthropologists call the "emic", or the insider's perspective.</em></p>
+      </div>
+    </section>
+
+    <hr class="section-divider">
+
+    <!-- Connection -->
+    <section class="article-section" id="connection">
+      <span class="section-number">02</span>
+      <h2 class="section-heading">Connection</h2>
+      <p class="section-subheading">Building bridges</p>
+      <div class="section-body">
+        <p>After understanding the community, the next step is connection. Taking what you know and starting to build bridges. Connection is about starting conversations, getting people to "sit together", and realizing they're all part of the same story. The goal here is creating shared understanding.</p>
+        <p>You do this through workshops, through co-creation, through teaching and learning side-by-side. It's about creating fertile ground where ideas can grow and people feel heard. We listen not to check off a task, but to build understanding (or empathy when possible) that becomes actionable.</p>
+      </div>
+    </section>
+
+    <hr class="section-divider">
+
+    <!-- Collaboration -->
+    <section class="article-section" id="collaboration">
+      <span class="section-number">03</span>
+      <h2 class="section-heading">Collaboration</h2>
+      <p class="section-subheading">Turning connection into action</p>
+      <div class="section-body">
+        <p>Now comes collaboration, where things get concrete. Collaboration is taking connection and doing something with it: making progress. It means working on something, and starting from common needs. This is the layer where insight turns into action, where researchers, designers, PMs, and engineers meet and see that the whole is much smarter than any individual part.</p>
+        <p>Start small. Go after tasks that both customers and teams see as important. It's these early, manageable wins that build trust and momentum. No massive initiatives, just incremental wins. Those first collaborative victories that prove the value of working together. It's all about building the foundation for systemic change.</p>
+      </div>
+    </section>
+
+    <hr class="section-divider">
+
+    <!-- Communication -->
+    <section class="article-section" id="communication">
+      <span class="section-number">04</span>
+      <h2 class="section-heading">Communication</h2>
+      <p class="section-subheading">Keeping the pace</p>
+      <div class="section-body">
+        <p>The next layer is communication. Keeping everyone, from internal stakeholders to end users, in the loop about what's happening, what's changing, and why it matters. Communication is storytelling. It's about saying, "Here's what we're learning, here's how we're growing, and here's where we're heading."</p>
+        <p>Internally, this means preventing silos, making sure everyone knows the why behind the what. For users, it means being transparent about what's happening, giving them visibility and ownership. It's a story where we're all part of the plot.</p>
+      </div>
+    </section>
+
+    <hr class="section-divider">
+
+    <!-- Vision -->
+    <section class="article-section" id="vision">
+      <span class="section-number">05</span>
+      <h2 class="section-heading">Vision</h2>
+      <p class="section-subheading">Designing for the future</p>
+      <div class="section-body">
+        <p>Finally, there's vision. The aspirational piece that gives meaning to all the other layers. Vision is the direction that keeps the work purposeful and focused, grounding future possibilities in the realities, mental models and insights we've uncovered along the way.</p>
+        <p>A solid vision asks, "What kind of future do we want to create?" and makes sure that every research activity, every decision is driving towards that picture. It's the highest layer, but without everything below it, it's just fantasy. Vision is what happens when community, connection, collaboration, and communication all come together to create something lasting, something bigger than any of us.</p>
+      </div>
+    </section>
+
+    <div class="article-closing">&#10022;&#10022;&#10022;</div>
+
+    <p class="article-coda">In this approach, every layer matters. You don't get to the top without building from the ground up. You don't reach vision without community. You don't get collaboration without connection. It's about looking into each part of the process and allowing it to inform, transform, and elevate the next, until what you have is a structure built with intention, authenticity.</p>
+  </article>
+</main>
+
+<footer style="margin-top: var(--space-16);">
+  <div class="page-footer">
+    <span>Commons Lab &mdash; Research Writing</span>
+    <span>Layering Awareness</span>
+  </div>
+</footer>
+
+<script>
+  const sections = document.querySelectorAll('.article-section');
+  const navLinks = document.querySelectorAll('.sidebar-nav a');
+  const layerImage = document.getElementById('layer-image');
+  const layerImagesById = {
+    community: 'layer-community.png',
+    connection: 'layer-connection.png',
+    collaboration: 'layer-collaboration.png',
+    communication: 'layer-communication.png',
+    vision: 'layer-vision.png'
+  };
+
+  const revealObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) entry.target.classList.add('visible');
+    });
+  }, { threshold: 0.15, rootMargin: '-52px 0px 0px 0px' });
+
+  sections.forEach(s => revealObserver.observe(s));
+
+  function updateActiveLayer() {
+    if (!sections.length) return;
+
+    const viewportMid = window.innerHeight * 0.5;
+    let activeId = null;
+
+    sections.forEach(section => {
+      const rect = section.getBoundingClientRect();
+      if (rect.top <= viewportMid && rect.bottom >= viewportMid) {
+        activeId = section.id;
+      }
+    });
+
+    if (!activeId) {
+      const firstRect = sections[0].getBoundingClientRect();
+      if (firstRect.top > viewportMid) {
+        if (layerImage) layerImage.classList.remove('visible');
+        navLinks.forEach(a => a.classList.remove('active'));
+        return;
+      }
+      activeId = sections[sections.length - 1].id;
+    }
+
+    const imageSrc = layerImagesById[activeId];
+    if (layerImage && imageSrc) {
+      if (layerImage.src.indexOf(imageSrc) === -1) layerImage.src = imageSrc;
+      layerImage.classList.add('visible');
+    }
+
+    navLinks.forEach(a => {
+      a.classList.toggle('active', a.getAttribute('href') === '#' + activeId);
+    });
+  }
+
+  let ticking = false;
+  const requestUpdate = () => {
+    if (ticking) return;
+    ticking = true;
+    window.requestAnimationFrame(() => {
+      updateActiveLayer();
+      ticking = false;
+    });
+  };
+
+  window.addEventListener('scroll', requestUpdate, { passive: true });
+  window.addEventListener('resize', requestUpdate);
+  updateActiveLayer();
+</script>
 </body>
 </html>
