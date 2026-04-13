@@ -6,7 +6,7 @@
 <title>Layering Awareness — A community driven approach to user research</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=DM+Mono:ital,wght@0,400;0,500;1,400&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300;1,400&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,400;0,500;1,400&family=IBM+Plex+Sans:ital,wght@0,300;0,400;0,500;1,300;1,400&family=IBM+Plex+Serif:ital,wght@0,400;1,400&display=swap" rel="stylesheet">
 <style>
   :root {
     --cl-black: #0A0A0A;
@@ -19,9 +19,9 @@
     --cl-surface: #F5F4F0;
     --cl-bg: #FFFFFF;
     --cl-white: #FFFFFF;
-    --font-serif: 'DM Serif Display', Georgia, serif;
-    --font-sans: 'DM Sans', sans-serif;
-    --font-mono: 'DM Mono', monospace;
+    --font-serif: 'IBM Plex Serif', Georgia, serif;
+    --font-sans: 'IBM Plex Sans', sans-serif;
+    --font-mono: 'IBM Plex Mono', monospace;
     --space-1: 4px;
     --space-2: 8px;
     --space-3: 12px;
@@ -90,7 +90,6 @@
 
   /* -- Sidebar -- */
   .sidebar {
-    border-right: 1px solid var(--cl-border);
     padding: var(--space-12) var(--space-6) var(--space-12) var(--space-8);
     position: sticky;
     top: 52px;
@@ -101,7 +100,6 @@
 
   .sidebar-image {
     margin-top: var(--space-8);
-    border-top: 1px solid var(--cl-border);
     padding-top: var(--space-6);
   }
 
@@ -126,9 +124,44 @@
     margin-bottom: var(--space-4);
   }
 
+  .sidebar-group {
+    margin-bottom: var(--space-4);
+    padding-bottom: var(--space-3);
+  }
+
+  .sidebar-group summary {
+    list-style: none;
+    cursor: pointer;
+    font-family: var(--font-mono);
+    font-size: 0.65rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--cl-muted);
+    margin-bottom: var(--space-3);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .sidebar-group summary::-webkit-details-marker {
+    display: none;
+  }
+
+  .sidebar-group summary::after {
+    content: '+';
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    color: var(--cl-subtle);
+  }
+
+  .sidebar-group[open] summary::after {
+    content: '';
+  }
+
   .sidebar-nav {
     list-style: none;
-    margin-bottom: var(--space-12);
+    margin-bottom: var(--space-4);
+    padding-left: var(--space-2);
   }
 
   .sidebar-nav li {
@@ -454,21 +487,20 @@
 
 <main>
   <aside class="sidebar">
-    <div class="sidebar-label">Layers</div>
-    <ul class="sidebar-nav">
-      <li><a href="#community" class="active">Community</a></li>
-      <li><a href="#connection">Connection</a></li>
-      <li><a href="#collaboration">Collaboration</a></li>
-      <li><a href="#communication">Communication</a></li>
-      <li><a href="#vision">Vision</a></li>
-    </ul>
+    <div class="sidebar-label">Menu</div>
+    <details class="sidebar-group">
+      <summary>Research writing</summary>
+      <ul class="sidebar-nav">
+        <li><a href="#top-article">Layering awareness</a></li>
+      </ul>
+    </details>
 
     <div class="sidebar-image">
       <img id="layer-image" src="layer-community.png" alt="Current layer diagram">
     </div>
   </aside>
 
-  <article class="article">
+  <article id="top-article" class="article">
     <div class="article-eyebrow">User Research &mdash; Framework</div>
     <h1 class="article-title">Layering<br>Awareness</h1>
     <p class="article-subtitle">A community driven approach to user research</p>
@@ -590,7 +622,7 @@
 
 <script>
   const sections = document.querySelectorAll('.article-section');
-  const navLinks = document.querySelectorAll('.sidebar-nav a');
+  const navLinks = document.querySelectorAll('.sidebar-nav a.layer-link');
   const layerImage = document.getElementById('layer-image');
   const layerImagesById = {
     community: 'layer-community.png',
