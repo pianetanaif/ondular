@@ -7,22 +7,23 @@
   <link rel="icon" href="/favicon.ico">
   <style>
     :root {
-      --color-page: #ededea;
-      --color-surface: #f8f8f5;
-      --color-text: #1f1f1c;
-      --color-muted: #5d5d58;
-      --color-rule: #d6d6cf;
+      --color-page: #171816;
+      --color-surface: #1f211e;
+      --color-text: #ece9df;
+      --color-muted: #b9b5a8;
+      --color-rule: #3a3d37;
+      --color-accent: #d8d0b8;
       --space-1: 0.5rem;
       --space-2: 0.875rem;
       --space-3: 1.25rem;
       --space-4: 2rem;
-      --space-5: 3rem;
-      --radius: 12px;
+      --space-5: 3.5rem;
+      --radius: 16px;
       --font-serif: "Source Serif 4", "Iowan Old Style", "Palatino Linotype", Palatino, Georgia, serif;
-      --font-sans: Inter, "Helvetica Neue", Helvetica, Arial, sans-serif;
-      --text-body: clamp(1.05rem, 1.5vw, 1.18rem);
-      --text-h1: clamp(2rem, 4vw, 3.1rem);
-      --text-h2: clamp(1.25rem, 2vw, 1.55rem);
+      --font-sans: "Avenir Next", Avenir, Inter, "Helvetica Neue", Helvetica, Arial, sans-serif;
+      --text-body: clamp(1.02rem, 1.15vw, 1.18rem);
+      --text-h1: clamp(2.35rem, 5vw, 4.6rem);
+      --text-h2: clamp(1.2rem, 2vw, 1.55rem);
     }
 
     * { box-sizing: border-box; }
@@ -31,9 +32,9 @@
       margin: 0;
       background: var(--color-page);
       color: var(--color-text);
-      font-family: var(--font-serif);
+      font-family: var(--font-sans);
       font-size: var(--text-body);
-      line-height: 1.75;
+      line-height: 1.68;
       text-rendering: optimizeLegibility;
       -webkit-font-smoothing: antialiased;
     }
@@ -42,14 +43,14 @@
       max-width: 96rem;
       margin: var(--space-5) auto;
       background: var(--color-surface);
-      padding: clamp(1.2rem, 3vw, 2.5rem);
+      padding: clamp(1.4rem, 3vw, 3rem);
       border: 1px solid var(--color-rule);
       border-radius: var(--radius);
     }
 
     .layout {
       display: grid;
-      grid-template-columns: minmax(0, 1fr) 44rem;
+      grid-template-columns: minmax(0, 1fr) 36rem;
       gap: clamp(1.25rem, 3vw, 2.75rem);
       align-items: start;
     }
@@ -60,35 +61,41 @@
 
     .sidebar {
       position: sticky;
-      top: 1.5rem;
+      top: 2rem;
     }
 
     h1, h2 {
       margin: 0;
       line-height: 1.15;
-      letter-spacing: -0.02em;
+      letter-spacing: -0.015em;
       font-family: var(--font-sans);
+      font-weight: 500;
     }
 
     h1 {
       font-size: var(--text-h1);
-      margin-bottom: var(--space-1);
+      margin-bottom: var(--space-2);
+      max-width: 16ch;
     }
 
     h2 {
       font-size: var(--text-h2);
       margin-top: var(--space-5);
       margin-bottom: var(--space-2);
+      color: var(--color-accent);
     }
 
-    p { margin: 0 0 var(--space-3); }
+    p {
+      margin: 0 0 var(--space-3);
+      max-width: 66ch;
+    }
 
     .subtitle {
       color: var(--color-muted);
       font-family: var(--font-sans);
-      font-size: 0.98rem;
+      font-size: 0.9rem;
       text-transform: uppercase;
-      letter-spacing: 0.08em;
+      letter-spacing: 0.12em;
       margin-bottom: var(--space-4);
     }
 
@@ -104,14 +111,14 @@
       width: 100%;
       height: auto;
       display: block;
-      border-radius: 6px;
+      border-radius: 10px;
       border: 1px solid var(--color-rule);
       background: #fff;
     }
 
     .divider {
       color: var(--color-muted);
-      text-align: center;
+      text-align: left;
       letter-spacing: 0.2em;
       margin: var(--space-5) 0;
     }
